@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Yoshi's Island Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui-layer">
+            <div id="score">Huevos: 0</div>
+            <div id="start-screen" class="screen">
+                <h1>Aventura de Yoshi</h1>
+                <p>Toca para Saltar</p>
+                <button id="start-btn">Jugar</button>
+            </div>
+            <div id="game-over-screen" class="screen hidden">
+                <h1>¡Oh no!</h1>
+                <p>Puntuación Final: <span id="final-score">0</span></p>
+                <button id="restart-btn">Intentar de nuevo</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
