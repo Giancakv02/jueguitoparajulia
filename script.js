@@ -186,6 +186,7 @@ const yoshi = {
             this.y = groundLevel - this.height;
             this.dy = 0;
             this.grounded = true;
+            jumps = 0; // Reset jumps
         } else {
             this.grounded = false;
         }
