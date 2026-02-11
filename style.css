@@ -1,14 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: #87CEEB; /* Sky blue */
+    background-color: #87CEEB;
+    /* Sky blue */
     font-family: 'Fredoka One', cursive;
-    touch-action: none; /* Prevent browser zooming/scrolling on mobile */
+    touch-action: none;
+    /* Prevent browser zooming/scrolling on mobile */
 }
 
 #game-container {
@@ -32,7 +35,8 @@ canvas {
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Let clicks pass through to canvas during gameplay */
+    pointer-events: none;
+    /* Let clicks pass through to canvas during gameplay */
 }
 
 .screen {
@@ -48,23 +52,29 @@ canvas {
     align-items: center;
     color: white;
     text-shadow: 2px 2px 0 #000;
-    pointer-events: auto; /* Re-enable clicks for UI elements */
+    pointer-events: auto;
+    /* Re-enable clicks for UI elements */
+    z-index: 20;
+    /* Ensure it's on top */
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #4CAF50; /* Yoshi Green */
+    color: #4CAF50;
+    /* Yoshi Green */
     -webkit-text-stroke: 1.5px white;
+    pointer-events: none;
 }
 
 p {
     font-size: 1.5rem;
     margin-bottom: 2rem;
+    pointer-events: none;
 }
 
 button {
@@ -72,12 +82,15 @@ button {
     font-size: 1.5rem;
     border: none;
     border-radius: 50px;
-    background-color: #FF5722; /* Orange button */
+    background-color: #FF5722;
+    /* Orange button */
     color: white;
     cursor: pointer;
     font-family: 'Fredoka One', cursive;
     box-shadow: 0 4px 0 #E64A19;
     transition: transform 0.1s;
+    pointer-events: auto;
+    z-index: 30;
 }
 
 button:active {

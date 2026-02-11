@@ -1,3 +1,124 @@
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Game State
+let gameState = 'START'; // START, PLAYING, GAMEOVER
+let frames = 0;
+let score = 0;
+let items = []; // For eggs
+let speed = 5;
+
+// Sound Effects (Web Audio API)
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSound(type) {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    if (type === 'jump') {
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.1);
+    } else if (type === 'collect') {
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.1);
+        gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.1);
+    } else if (type === 'gameover') {
+        oscillator.type = 'sawtooth';
+        oscillator.frequency.setValueAtTime(200, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.5);
+        gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.5);
+    }
+}
+
+// Responsive Canvas
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Input Handling
+let jumps = 0;
+const MAX_JUMPS = 2;
+
+function handleInput() {
+    if (gameState === 'START') {
+        // Do nothing here, let the button start the game
+    } else if (gameState === 'PLAYING') {
+        if (jumps < MAX_JUMPS) {
+            yoshi.dy = -yoshi.jumpPower;
+            yoshi.grounded = false;
+            jumps++;
+            playSound('jump');
+        }
+    } else if (gameState === 'GAMEOVER') {
+        // handled by button
+    }
+}
+
+// Global Touch & Click support for jumping
+window.addEventListener('touchstart', (e) => {
+    // Check if target is a button to avoid double firing
+    if (e.target.tagName !== 'BUTTON') {
+        handleInput();
+    }
+}, { passive: false });
+
+window.addEventListener('mousedown', (e) => {
+    if (e.target.tagName !== 'BUTTON') {
+        handleInput();
+    }
+});
+
+window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' || e.code === 'ArrowUp') {
+        handleInput();
+    }
+});
+
+// Explicit Button Listeners
+const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    console.log('Start Click');
+    startGame();
+});
+startBtn.addEventListener('touchstart', (e) => {
+    e.stopPropagation();
+    console.log('Start Touch');
+    startGame();
+}, { passive: false });
+
+const restartBtn = document.getElementById('restart-btn');
+restartBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    resetGame();
+});
+restartBtn.addEventListener('touchstart', (e) => {
+    e.stopPropagation();
+    resetGame();
+}, { passive: false });
+
+
 // Game Objects
 const yoshi = {
     x: 50,
